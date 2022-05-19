@@ -170,12 +170,190 @@ class Bogey {
     }
 }
 
-
+class Birdie{
+    constructor({position,velocity}){
+    this.position = position
+    this.velocity = velocity
+    const image = new Image ()
+    image.src= "./Images/Birdie.png"
+  
+    const scale = .05
+    this.image= image
+    this.width = image.width * scale
+    this.height = image.height * scale
+    this.position = {
+        x: position.x,
+        y: position.y
+    }
+}
+draw(){  
+    c.drawImage(this.image,this.position.x,this.position.y,this.width,this.height)
+ }
+update(){
+        this.draw()
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
+    if
+    (this.position.x + this.width + this.velocity.x >= canvas.width || 
+       this.position.x              + this.velocity.x <= 0){
+        this.velocity.x = -this.velocity.x
+    } else if
+    (this.position.y + this.width + this.velocity.y >= canvas.height || 
+        this.position.y              + this.velocity.y <= 0){
+            this.velocity.y = -this.velocity.y
+        }
+}
+}
+class Eagle{
+    constructor({position,velocity}){
+    this.position = position
+    this.velocity = velocity
+    const image = new Image ()
+    image.src= "./Images/Birdie.png"
+  
+    const scale = .05
+    this.image= image
+    this.width = image.width * scale
+    this.height = image.height * scale
+    this.position = {
+        x: position.x,
+        y: position.y
+    }
+}
+draw(){  
+    c.drawImage(this.image,this.position.x,this.position.y,this.width,this.height)
+ }
+update(){
+    this.draw()
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
+    if
+    (this.position.x + this.width + this.velocity.x >= canvas.width || 
+       this.position.x              + this.velocity.x <= 0){
+        this.velocity.x = -this.velocity.x
+    } else if
+    (this.position.y + this.width + this.velocity.y >= canvas.height || 
+        this.position.y              + this.velocity.y <= 0){
+            this.velocity.y = -this.velocity.y
+        }
+}
+}
+class Albatross{
+    constructor({position,velocity}){
+    this.position = position
+    this.velocity = velocity
+    const image = new Image ()
+    image.src= "./Images/Albatross.png"
+  
+    const scale = .2
+    this.image= image
+    this.width = image.width * scale
+    this.height = image.height * scale
+    this.position = {
+        x: position.x,
+        y: position.y
+    }
+}
+draw(){  
+    c.drawImage(this.image,this.position.x,this.position.y,this.width,this.height)
+ }
+update(){
+    this.draw()
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
+    if
+    (this.position.x + this.width + this.velocity.x >= canvas.width || 
+       this.position.x              + this.velocity.x <= 0){
+        this.velocity.x = -this.velocity.x
+    } else if
+    (this.position.y + this.width + this.velocity.y >= canvas.height || 
+        this.position.y              + this.velocity.y <= 0){
+            this.velocity.y = -this.velocity.y
+        }
+}
+}
+function randomBetween(min,max){
+    return Math.random()*(max-min)+min
+}
+let birdieSpeed = 30
+let eagleSpeed = 75
+let albatrossSpeed = 150
 
 const player = new Player()
 const projectiles = []
 const grids =[new Grid()]
 const particles =[]
+const birdies =[
+    new Birdie({
+    position:{
+       // x: randomBetween(this.width,canvas.width-this.width), para hacerlo random
+       //y: randomBetween(this.height,canvas.height-this.height)
+       x:Math.random()*(canvas.width -300),
+       y:Math.random()*(canvas.height -300)
+    },
+    velocity:{
+        x:(Math.random()-0.5)*birdieSpeed,
+        y:(Math.random()-0.5)*birdieSpeed
+    }
+
+}),
+new Birdie({
+    position:{
+        x:Math.random()*(canvas.width -300),
+        y:Math.random()*(canvas.height -300)
+    },
+    velocity:{
+        x:(Math.random()-0.5)*birdieSpeed,
+        y:(Math.random()-0.5)*birdieSpeed
+    }
+})
+]
+const eagles =[
+    new Eagle({
+    position:{
+        x:Math.random()*(canvas.width -300),
+        y:Math.random()*(canvas.height -300)
+    },
+    velocity:{
+        x:(Math.random()-0.5)*eagleSpeed,
+        y:(Math.random()-0.5)*eagleSpeed
+    }
+
+}),
+new Eagle({
+    position:{
+        x:Math.random()*(canvas.width -300),
+        y:Math.random()*(canvas.height -300)
+    },
+    velocity:{
+        x:(Math.random()-0.5)*eagleSpeed,
+        y:(Math.random()-0.5)*eagleSpeed
+    }
+})
+]
+const albatrosss =[
+    new Albatross({
+    position:{
+        x:Math.random()*(canvas.width -300),
+        y:Math.random()*(canvas.height -300)
+    },
+    velocity:{
+        x:(Math.random()-0.5)*albatrossSpeed,
+        y:(Math.random()-0.5)*albatrossSpeed
+    }
+
+}),
+new Albatross({
+    position:{
+        x:Math.random()*(canvas.width -300),
+        y:Math.random()*(canvas.height -300)
+    },
+    velocity:{
+        x:(Math.random()-0.5)*albatrossSpeed,
+        y:(Math.random()-0.5)*albatrossSpeed
+    }
+})
+]
 
 const keys = {
     a: {
@@ -217,6 +395,19 @@ function animate(){
     requestAnimationFrame(animate)
     c.fillStyle="green"
     c.fillRect(0,0,canvas.width,canvas.height)
+
+    for (let i = birdies.length-1;i>=0;i--){
+        let birdie = birdies[i]
+        birdie.update()
+    }
+    for (let i = eagles.length-1;i>=0;i--){
+        let eagle = eagles[i]
+        eagle.update()
+    }
+    for (let i = albatrosss.length-1;i>=0;i--){
+        let albatross = albatrosss[i]
+        albatross.update()
+    }
     player.update()
     particles.forEach((particle,i) =>{
         if(particle.opacity<=0){
@@ -229,18 +420,27 @@ function animate(){
         console.log(particles)
         particle.update()
     })
-    projectiles.forEach((projectile,index) =>{
+//-----------------------------------------------------------------------------------------------------------
+    for(let i=projectiles.length-1;i>=0;i--){
+    const projectile = projectiles[i]
 
+    for(let j=birdies.length-1;j>=0;j--){
+        const birdie = birdies[j]
+        if(
+            Math.hypot(
+                projectile.position.x - birdie.position.x,
+                projectile.position.y - birdie.position.y
+                )<
+                projectile.radius + birdie.width){
+                    projectiles.splice(i,1)
+                }
+    }
         if(projectile.position.y + projectile.radius<=0){
-            setTimeout(()=>{
-                projectiles.splice(index,1)
-            },0)
-           
-        }else{
+            projectiles.splice(i,1)
+         } else{
             projectile.update()
         }
-        projectile.update()
-    })
+    }
 
 grids.forEach((grid,gridIndex)=>{
     grid.update()
