@@ -1,8 +1,9 @@
 // const bgMusic = new Audio("sounds/8bit.mp3");bgMusic.level = 0.5;
-
+const scoreEl = document.querySelector("#scoreEl")
+const shotsLeftEl = document.querySelector("#shotsLeftEl")
 const canvas = document.querySelector("canvas")
 const c = canvas.getContext("2d")
-
+console.log(shotsLeftEl)
 canvas.width = innerWidth // viene de window. Como si tuviera window.inner...
 canvas.height = innerHeight
 
@@ -192,6 +193,25 @@ const keys = {
 let frames = 0
 let randomInterval = Math.floor((Math.random()*500))+500
 console.log(randomInterval)
+let score = 0
+let shotsLeft = 72
+
+function createParticles({object,color}){
+    for (let i = 0; i<5;i++){
+        particles.push(new Particle({
+            position:{
+                x:object.position.x + object.width/2,
+                y:object.position.y +object.height/2
+            },
+            velocity:{
+                x:(Math.random()-.5)*2,
+                y:(Math.random()-.5)*2
+            },
+            radius:Math.random()*3,
+            color:color  || "red"
+        }))
+    } 
+}
 
 function animate(){
     requestAnimationFrame(animate)
@@ -246,21 +266,14 @@ grids.forEach((grid,gridIndex)=>{
                         (projectile2) => projectile2 === projectile
                     )
                     //remove invader and projectile
-                        if (invaderFound && projectileFound){   
-                            for (let i = 0; i<5;i++){
-                                particles.push(new Particle({
-                                    position:{
-                                        x:invader.position.x + invader.width/2,
-                                        y:invader.position.y +invader.height/2
-                                    },
-                                    velocity:{
-                                        x:(Math.random()-.5)*2,
-                                        y:(Math.random()-.5)*2
-                                    },
-                                    radius:Math.random()*3,
-                                    color:"red"
-                                }))
-                            }                     
+                        if (invaderFound && projectileFound){ 
+                            score += 1  
+                            console.log("este es el score", score)
+                            scoreEl.innerHTML = score
+                    createParticles({
+                        object:invader
+
+                    })
                    grid.invaders.splice(i,1)
                    projectiles.splice(j,1) 
                    if(grid.invaders.length>0){
@@ -313,6 +326,9 @@ addEventListener('keydown',({key})=>{
             break;
             case ' ':
                 console.log("space")
+                shotsLeft -= 1  
+                console.log("te quedan", shotsLeft)
+                shotsLeftEl.innerHTML = shotsLeft
             break;
     }
 })
