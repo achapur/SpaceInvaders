@@ -176,6 +176,8 @@ class Birdie{
     this.velocity = velocity
     const image = new Image ()
     image.src= "./Images/Birdie.png"
+    this.opacity=1
+  
   
     const scale = .05
     this.image= image
@@ -202,6 +204,8 @@ update(){
         this.position.y              + this.velocity.y <= 0){
             this.velocity.y = -this.velocity.y
         }
+
+    
 }
 }
 class Eagle{
@@ -275,85 +279,17 @@ update(){
 function randomBetween(min,max){
     return Math.random()*(max-min)+min
 }
-let birdieSpeed = 30
-let eagleSpeed = 75
-let albatrossSpeed = 150
+let birdieSpeed = 10
+let eagleSpeed = 15
+let albatrossSpeed = 20
 
 const player = new Player()
 const projectiles = []
 const grids =[new Grid()]
 const particles =[]
-const birdies =[
-    new Birdie({
-    position:{
-       // x: randomBetween(this.width,canvas.width-this.width), para hacerlo random
-       //y: randomBetween(this.height,canvas.height-this.height)
-       x:Math.random()*(canvas.width -300),
-       y:Math.random()*(canvas.height -300)
-    },
-    velocity:{
-        x:(Math.random()-0.5)*birdieSpeed,
-        y:(Math.random()-0.5)*birdieSpeed
-    }
-
-}),
-new Birdie({
-    position:{
-        x:Math.random()*(canvas.width -300),
-        y:Math.random()*(canvas.height -300)
-    },
-    velocity:{
-        x:(Math.random()-0.5)*birdieSpeed,
-        y:(Math.random()-0.5)*birdieSpeed
-    }
-})
-]
-const eagles =[
-    new Eagle({
-    position:{
-        x:Math.random()*(canvas.width -300),
-        y:Math.random()*(canvas.height -300)
-    },
-    velocity:{
-        x:(Math.random()-0.5)*eagleSpeed,
-        y:(Math.random()-0.5)*eagleSpeed
-    }
-
-}),
-new Eagle({
-    position:{
-        x:Math.random()*(canvas.width -300),
-        y:Math.random()*(canvas.height -300)
-    },
-    velocity:{
-        x:(Math.random()-0.5)*eagleSpeed,
-        y:(Math.random()-0.5)*eagleSpeed
-    }
-})
-]
-const albatrosss =[
-    new Albatross({
-    position:{
-        x:Math.random()*(canvas.width -300),
-        y:Math.random()*(canvas.height -300)
-    },
-    velocity:{
-        x:(Math.random()-0.5)*albatrossSpeed,
-        y:(Math.random()-0.5)*albatrossSpeed
-    }
-
-}),
-new Albatross({
-    position:{
-        x:Math.random()*(canvas.width -300),
-        y:Math.random()*(canvas.height -300)
-    },
-    velocity:{
-        x:(Math.random()-0.5)*albatrossSpeed,
-        y:(Math.random()-0.5)*albatrossSpeed
-    }
-})
-]
+let birdies =[]
+let eagles =[]
+let albatrosss =[]
 
 const keys = {
     a: {
@@ -396,6 +332,45 @@ function animate(){
     c.fillStyle="green"
     c.fillRect(0,0,canvas.width,canvas.height)
 
+    if(frames%200 ===0 && birdies.length < 5){
+        birdies.push(new Birdie({
+            position:{
+                x:Math.random()*(canvas.width -300),
+                y:Math.random()*(canvas.height -300)
+            },
+            velocity:{
+                x:(Math.random()-0.5)*birdieSpeed/2,
+                y:(Math.random()-0.5)*birdieSpeed
+            }
+        }))
+    }
+
+    if(frames%450 ===0 && eagles.length < 3){
+        eagles.push(new Eagle({
+            position:{
+                x:Math.random()*(canvas.width -300),
+                y:Math.random()*(canvas.height -300)
+            },
+            velocity:{
+                x:(Math.random()-0.5)*eagleSpeed,
+                y:(Math.random()-0.5)*eagleSpeed
+            }
+        }))
+    }
+
+    if(frames%800 ===0 && albatrosss.length < 2){
+        albatrosss.push(new Albatross({
+            position:{
+                x:Math.random()*(canvas.width -300),
+                y:Math.random()*(canvas.height -300)
+            },
+            velocity:{
+                x:(Math.random()-0.5)*albatrossSpeed*2,
+                y:(Math.random()-0.5)*albatrossSpeed
+            }
+        }))
+    }
+
     for (let i = birdies.length-1;i>=0;i--){
         let birdie = birdies[i]
         birdie.update()
@@ -421,18 +396,54 @@ function animate(){
         particle.update()
     })
 //-----------------------------------------------------------------------------------------------------------
-    for(let i=projectiles.length-1;i>=0;i--){
-    const projectile = projectiles[i]
+    
 
+for(let i=projectiles.length-1;i>=0;i--){
+    const projectile = projectiles[i]
+//eliminar projectile si choca con algo
     for(let j=birdies.length-1;j>=0;j--){
         const birdie = birdies[j]
         if(
+            
             Math.hypot(
                 projectile.position.x - birdie.position.x,
                 projectile.position.y - birdie.position.y
                 )<
                 projectile.radius + birdie.width){
                     projectiles.splice(i,1)
+                    birdies.splice(j,1)
+                    score -= 1 
+                    scoreEl.innerHTML = score
+  
+                }
+    }
+    for(let k=eagles.length-1;k>=0;k--){
+        const eagle = eagles[k]
+        if(
+            Math.hypot(
+                projectile.position.x - eagle.position.x,
+                projectile.position.y - eagle.position.y
+                )<
+                projectile.radius + eagle.width){
+                    projectiles.splice(i,1)
+                    eagles.splice(k,1)
+                    score -= 2
+                    scoreEl.innerHTML = score
+                }
+    }
+    for(let m=albatrosss.length-1;m>=0;m--){
+        const albatross = albatrosss[m]
+        if(
+            
+            Math.hypot(
+                projectile.position.x - albatross.position.x,
+                projectile.position.y - albatross.position.y
+                )<
+                projectile.radius + albatross.width){
+                    projectiles.splice(i,1)
+                    albatrosss.splice(m,1)
+                    score -= 3
+                    scoreEl.innerHTML = score
                 }
     }
         if(projectile.position.y + projectile.radius<=0){
@@ -504,7 +515,7 @@ grids.forEach((grid,gridIndex)=>{
     //spawning enemies
     if (frames%randomInterval ===0){
         grids.push(new Grid)
-        randomInterval = Math.floor((Math.random()*500))+500
+        randomInterval = Math.floor((Math.random()*500)+500)
         let frames = 0
         console.log(randomInterval)
     }
