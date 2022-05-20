@@ -1,16 +1,52 @@
 <style>
     body{
         margin:0 ;
+        font-family:sans-serif;
         }
 </style>
 
 <p
-style="position: fixed; z-index: 10; color: white;left:20px; top:10px; margin :0; font-family:sans-serif; font-size:14px"
+    style="position: fixed;
+    z-index: 10; 
+    color: white;
+    left:20px; 
+    top:10px; 
+    margin :0; 
+    font-family:sans-serif; 
+    font-size:14px"
 ><span>Score:</span> <span id="scoreEl">0</span></p>
 
 <p
-style="position: fixed; z-index: 10; color: white;right:20px; top:10px; margin :0; font-family:sans-serif; font-size:14px"
+    style="position: fixed; 
+    z-index: 10; 
+    color: white;
+    right:20px; 
+    top:10px; 
+    margin :0; 
+    font-family:sans-serif; 
+    font-size:14px;"
 ><span>Shots Left:</span> <span id="shotsLeftEl">72</span></p>
+<div id="modalEl" 
+style = 
+    "
+    display: none;
+    position: absolute;
+    background-color: white; 
+    top: 50%; 
+    transform: translate(-50%,-50%); 
+    left: 50%;
+    padding:16px;
+    max-width:500px;
+    width:100%;
+    text-align:center; 
+    border-radius: 5px">
+    <label style="font-size: 18px;color:gray">Your Score Is:</label>
+    <h1
+    id="modalScoreEl" 
+    style="font-size: 48px; margin-bottom: 0;margin-top: 8px;"> 0 </h1>
+    <p style="font-size: 18px;margin: 0;color:gray"> from par </p>
+    <button id="buttonEl" style="margin-top: 12px;background-color:blue;border:none;color:white;padding:8px 16px;border-radius: 5px;cursor: pointer;;">Restart Game</button>
+</div>
 <canvas ></canvas>
 
 <script src="index.js"></script>

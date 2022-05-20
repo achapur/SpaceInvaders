@@ -6,6 +6,9 @@ const c = canvas.getContext("2d")
 console.log(shotsLeftEl)
 canvas.width = innerWidth // viene de window. Como si tuviera window.inner...
 canvas.height = innerHeight
+const modalEl = document.querySelector("#modalEl")
+const modalScoreEl = document.querySelector("#modalScoreEl")
+const buttonEl = document.querySelector("#buttonEl")
 
 class Player {
     constructor (){
@@ -283,13 +286,36 @@ let birdieSpeed = 10
 let eagleSpeed = 15
 let albatrossSpeed = 20
 
-const player = new Player()
-const projectiles = []
-const grids =[new Grid()]
-const particles =[]
+
+let player = new Player()
+let grids =[new Grid()]
+let particles =[]
+let projectiles = []
 let birdies =[]
 let eagles =[]
 let albatrosss =[]
+let score = 0
+let shotsLeft = 72
+let frames = 0
+let intervalId
+let animationId
+let shotsTaken = 0
+let count = 120
+
+function init (){
+    player = new Player()
+    grids =[new Grid()]
+    particles =[]
+    projectiles = []
+    birdies =[]
+    eagles =[]
+    albatrosss =[]
+    score = 0
+    shotsLeft = 72
+    frames = 0
+    shotsTaken = 0
+    count =120
+}
 
 const keys = {
     a: {
@@ -304,11 +330,10 @@ const keys = {
 }
 //player.draw()
 
-let frames = 0
+
 let randomInterval = Math.floor((Math.random()*500))+500
 console.log(randomInterval)
-let score = 0
-let shotsLeft = 72
+
 
 function createParticles({object,color}){
     for (let i = 0; i<5;i++){
@@ -328,10 +353,10 @@ function createParticles({object,color}){
 }
 
 function animate(){
-    requestAnimationFrame(animate)
+    animationId = requestAnimationFrame(animate)
     c.fillStyle="green"
     c.fillRect(0,0,canvas.width,canvas.height)
-
+    
     if(frames%200 ===0 && birdies.length < 5){
         birdies.push(new Birdie({
             position:{
@@ -396,7 +421,22 @@ function animate(){
         particle.update()
     })
 //-----------------------------------------------------------------------------------------------------------
-    
+
+//to end game:
+if(shotsLeft===0){
+    cancelAnimationFrame(animationId)
+    clearInterval(intervalId)
+modalEl.style.display= 'block'
+modalScoreEl.innerHTML = score
+}
+
+var countdown = 10;
+while (countdown > 0){
+    countdown--;
+    console.log(countdown);
+}
+console.log("Blastoff!");
+
 
 for(let i=projectiles.length-1;i>=0;i--){
     const projectile = projectiles[i]
@@ -524,6 +564,7 @@ grids.forEach((grid,gridIndex)=>{
 
 animate()
 
+
 addEventListener('keydown',({key})=>{
   
     switch(key){
@@ -536,13 +577,16 @@ addEventListener('keydown',({key})=>{
             keys.d.pressed = true
             break;
             case ' ':
+                
                 console.log("space")
-                shotsLeft -= 1  
+                shotsLeft -= 1
                 console.log("te quedan", shotsLeft)
                 shotsLeftEl.innerHTML = shotsLeft
+                console.log(shotsTaken)
             break;
     }
 })
+
 
 
 addEventListener('keyup',({key})=>{
@@ -572,5 +616,13 @@ addEventListener('keyup',({key})=>{
             console.log(projectiles)
             break 
     }
+})
+
+addEventListener('click',(event)=>{
+    init()
+    animate()
+    modalEl.style.display='none'
+    scoreEl.innerHTML = score;
+    shotsLeftEl.innerHTML = shotsLeft
 })
 
