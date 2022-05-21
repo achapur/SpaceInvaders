@@ -212,7 +212,7 @@ update(){
        this.position.x              + this.velocity.x <= 0){
         this.velocity.x = -this.velocity.x
     } else if
-    (this.position.y + this.width + this.velocity.y >= canvas.height -100 || 
+    (this.position.y + this.width + this.velocity.y >= canvas.height -200 || 
         this.position.y              + this.velocity.y <= 0){
             this.velocity.y = -this.velocity.y
         }
@@ -248,7 +248,7 @@ update(){
        this.position.x              + this.velocity.x <= 0){
         this.velocity.x = -this.velocity.x
     } else if
-    (this.position.y + this.width + this.velocity.y >= canvas.height - 200 || 
+    (this.position.y + this.width + this.velocity.y >= canvas.height - 500 || 
         this.position.y              + this.velocity.y <= 0){
             this.velocity.y = -this.velocity.y
         }
@@ -282,7 +282,7 @@ update(){
        this.position.x              + this.velocity.x <= 0){
         this.velocity.x = -this.velocity.x
     } else if
-    (this.position.y + this.width + this.velocity.y >= canvas.height -400 || 
+    (this.position.y + this.width + this.velocity.y >= canvas.height -75000 || 
         this.position.y              + this.velocity.y <= 0){
             this.velocity.y = -this.velocity.y
         }
