@@ -153,14 +153,14 @@ class Bogey {
         }
         this.invaders = []
         const rows= Math.floor(Math.random()*3+1) // minimo 1 filas y max 3
-        const columns = Math.floor(Math.random()*12+2)
+        const columns = Math.floor(Math.random()*8+2)
         this.width = columns *70
        
         for(let i = 0; i<columns;i++){
             for(let y = 0; y<rows;y++){
             this.invaders.push(new Bogey({position:{
                 x:i*60,
-                y:y*70
+                y:y
             }}))
         }
     }
@@ -583,7 +583,7 @@ grids.forEach((grid,gridIndex)=>{
     }
     console.log(frames)
     //spawning enemies
-    if (frames%8000000 ===0){
+    if (frames%50000 ===0){
         grids.push(new Grid)
        // randomInterval = Math.floor((Math.random()*50000)+50000)
         let frames = 0
