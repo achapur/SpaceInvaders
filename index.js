@@ -148,8 +148,8 @@ class Bogey {
             y:0
         }
         this.invaders = []
-        const rows= Math.floor(Math.random()*5+2) // minimo 2 filas y max 7
-        const columns = Math.floor(Math.random()*8+5)
+        const rows= Math.floor(Math.random()*3+1) // minimo 1 filas y max 3
+        const columns = Math.floor(Math.random()*12+2)
         this.width = columns *70
         for(let i = 0; i<columns;i++){
             for(let y = 0; y<rows;y++){
@@ -166,7 +166,8 @@ class Bogey {
         this.position.x += this.velocity.x,
         this.position.y += this.velocity.y
         this.velocity.y = 0
-        if(this.position.x + this.width>canvas.width || this.position.x <=0 ){
+        if(this.position.x + this.width>canvas.width 
+            || this.position.x <=0 ){
             this.velocity.x = -this.velocity.x
             this.velocity.y = 30
         }
@@ -182,7 +183,7 @@ class Birdie{
     this.opacity=1
   
   
-    const scale = .05
+    const scale = .3
     this.image= image
     this.width = image.width * scale
     this.height = image.height * scale
@@ -203,7 +204,7 @@ update(){
        this.position.x              + this.velocity.x <= 0){
         this.velocity.x = -this.velocity.x
     } else if
-    (this.position.y + this.width + this.velocity.y >= canvas.height || 
+    (this.position.y + this.width + this.velocity.y >= canvas.height -100 || 
         this.position.y              + this.velocity.y <= 0){
             this.velocity.y = -this.velocity.y
         }
@@ -216,9 +217,9 @@ class Eagle{
     this.position = position
     this.velocity = velocity
     const image = new Image ()
-    image.src= "./Images/Birdie.png"
+    image.src= "./Images/Eagle.png"
   
-    const scale = .05
+    const scale = .4
     this.image= image
     this.width = image.width * scale
     this.height = image.height * scale
@@ -239,7 +240,7 @@ update(){
        this.position.x              + this.velocity.x <= 0){
         this.velocity.x = -this.velocity.x
     } else if
-    (this.position.y + this.width + this.velocity.y >= canvas.height || 
+    (this.position.y + this.width + this.velocity.y >= canvas.height - 200 || 
         this.position.y              + this.velocity.y <= 0){
             this.velocity.y = -this.velocity.y
         }
@@ -252,7 +253,7 @@ class Albatross{
     const image = new Image ()
     image.src= "./Images/Albatross.png"
   
-    const scale = .2
+    const scale = .08
     this.image= image
     this.width = image.width * scale
     this.height = image.height * scale
@@ -273,7 +274,7 @@ update(){
        this.position.x              + this.velocity.x <= 0){
         this.velocity.x = -this.velocity.x
     } else if
-    (this.position.y + this.width + this.velocity.y >= canvas.height || 
+    (this.position.y + this.width + this.velocity.y >= canvas.height -400 || 
         this.position.y              + this.velocity.y <= 0){
             this.velocity.y = -this.velocity.y
         }
@@ -301,6 +302,15 @@ let intervalId
 let animationId
 let shotsTaken = 0
 let count = 120
+const hitBallAudio = new Howl({src:'./audio/hitBall.wav',volume:.2})
+const birdieAudio = new Howl({src:'./audio/Bird.wav',volume:.2})
+const eagleAudio = new Howl({src:'./audio/Eagle.wav',volume:.2})
+const albatrossAudio = new Howl({src:'./audio/Albatross.wav',volume:.2})
+const bogeyAudio = new Howl({
+    src:'./audio/Bogey.wav',volume:.01
+})
+
+
 
 function init (){
     player = new Player()
@@ -331,7 +341,7 @@ const keys = {
 //player.draw()
 
 
-let randomInterval = Math.floor((Math.random()*500))+500
+let randomInterval = Math.floor((Math.random()*2000))+20000000
 console.log(randomInterval)
 
 
@@ -430,13 +440,6 @@ modalEl.style.display= 'block'
 modalScoreEl.innerHTML = score
 }
 
-var countdown = 10;
-while (countdown > 0){
-    countdown--;
-    console.log(countdown);
-}
-console.log("Blastoff!");
-
 
 for(let i=projectiles.length-1;i>=0;i--){
     const projectile = projectiles[i]
@@ -444,46 +447,52 @@ for(let i=projectiles.length-1;i>=0;i--){
     for(let j=birdies.length-1;j>=0;j--){
         const birdie = birdies[j]
         if(
-            
-            Math.hypot(
-                projectile.position.x - birdie.position.x,
-                projectile.position.y - birdie.position.y
-                )<
-                projectile.radius + birdie.width){
+            projectile.position.y-projectile.radius<=birdie.position.y + birdie.height&&
+            projectile.position.x + projectile.radius>=birdie.position.x &&
+            projectile.position.x - projectile.radius<=birdie.position.x + birdie.width &&
+            projectile.position.y + projectile.radius >=birdie.position.y
+                )
+                {
                     projectiles.splice(i,1)
                     birdies.splice(j,1)
                     score -= 1 
                     scoreEl.innerHTML = score
-  
+                    birdieAudio.play()
                 }
     }
     for(let k=eagles.length-1;k>=0;k--){
         const eagle = eagles[k]
         if(
-            Math.hypot(
-                projectile.position.x - eagle.position.x,
-                projectile.position.y - eagle.position.y
-                )<
-                projectile.radius + eagle.width){
+
+projectile.position.y-projectile.radius<=eagle.position.y + eagle.height&&
+projectile.position.x + projectile.radius>=eagle.position.x &&
+projectile.position.x - projectile.radius<=eagle.position.x + eagle.width &&
+projectile.position.y + projectile.radius >=eagle.position.y
+        )
+                {
                     projectiles.splice(i,1)
                     eagles.splice(k,1)
                     score -= 2
                     scoreEl.innerHTML = score
+                    eagleAudio.play()
                 }
     }
     for(let m=albatrosss.length-1;m>=0;m--){
         const albatross = albatrosss[m]
         if(
-            
-            Math.hypot(
-                projectile.position.x - albatross.position.x,
-                projectile.position.y - albatross.position.y
-                )<
-                projectile.radius + albatross.width){
+        
+projectile.position.y-projectile.radius<=albatross.position.y + albatross.height&&
+projectile.position.x + projectile.radius>=albatross.position.x &&
+projectile.position.x - projectile.radius<=albatross.position.x + albatross.width &&
+projectile.position.y + projectile.radius >=albatross.position.y
+
+            )
+                {
                     projectiles.splice(i,1)
                     albatrosss.splice(m,1)
                     score -= 3
                     scoreEl.innerHTML = score
+                    albatrossAudio.play()
                 }
     }
         if(projectile.position.y + projectile.radius<=0){
@@ -491,7 +500,16 @@ for(let i=projectiles.length-1;i>=0;i--){
          } else{
             projectile.update()
         }
+        if(projectile.position.y-projectile.radius<=0         
+            )
+                {
+                    projectiles.splice(i,1)
+                    score += 2
+                    scoreEl.innerHTML = score
+                    albatrossAudio.play()
+                }
     }
+
 
 grids.forEach((grid,gridIndex)=>{
     grid.update()
@@ -500,13 +518,10 @@ grids.forEach((grid,gridIndex)=>{
         //projectiles hit enemy
         projectiles.forEach((projectile,j) =>{
             if(
-                projectile.position.y - projectile.radius<=
-                    invader.position.y + invader.height &&
-                projectile.position.x + projectile.radius>=
-                    invader.position.x && 
-                projectile.position.x-projectile.radius<= 
-                    invader.position.x +invader.width && projectile.position.y + 
-                projectile.radius >= invader.position.y
+                projectile.position.y - projectile.radius<=invader.position.y + invader.height &&
+                projectile.position.x + projectile.radius>= invader.position.x && 
+                projectile.position.x-projectile.radius<= invader.position.x +invader.width &&
+                projectile.position.y + projectile.radius >= invader.position.y
                 ){
                    
                 setTimeout(()=>{
@@ -521,6 +536,7 @@ grids.forEach((grid,gridIndex)=>{
                             score += 1  
                             console.log("este es el score", score)
                             scoreEl.innerHTML = score
+                            bogeyAudio.play()
                     createParticles({
                         object:invader
 
@@ -555,7 +571,7 @@ grids.forEach((grid,gridIndex)=>{
     //spawning enemies
     if (frames%randomInterval ===0){
         grids.push(new Grid)
-        randomInterval = Math.floor((Math.random()*500)+500)
+        randomInterval = Math.floor((Math.random()*50000)+50000)
         let frames = 0
         console.log(randomInterval)
     }
@@ -583,6 +599,7 @@ addEventListener('keydown',({key})=>{
                 console.log("te quedan", shotsLeft)
                 shotsLeftEl.innerHTML = shotsLeft
                 console.log(shotsTaken)
+                hitBallAudio.play()
             break;
     }
 })
@@ -605,8 +622,8 @@ addEventListener('keyup',({key})=>{
                 console.log("space")
                 projectiles.push(new Projectile({
                     position:{
-                        x:player.position.x+player.width/2,
-                        y:player.position.y
+                        x:player.position.x+player.width-3,
+                        y:player.position.y+player.height-15
                     },
                     velocity:{
                         x:0,
