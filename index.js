@@ -14,6 +14,21 @@ const startModalEl = document.querySelector("#startModalEl")
 const instructionsModalEl = document.querySelector("#instructionsModalEl")
 const ideaModalEl = document.querySelector("#ideaModalEl")
 
+class Background{
+    constructor(){
+        const image = new Image()
+        image.src= "./Images/BG.jpg"
+        this.image = image
+        this.width=canvas.width
+        this.height=canvas.height
+        this.position={
+            x:0,
+            y:0
+        }
+    }
+}
+
+
 class Player {
     constructor (){
 
@@ -152,7 +167,7 @@ class Bogey {
             y:0
         }
         this.invaders = []
-        const rows= Math.floor(Math.random()*3+1) // minimo 1 filas y max 3
+        const rows= Math.floor(Math.random()*2+1) // minimo 1 filas y max 2
         const columns = Math.floor(Math.random()*8+2)
         this.width = columns *70
        
@@ -160,8 +175,9 @@ class Bogey {
             for(let y = 0; y<rows;y++){
             this.invaders.push(new Bogey({position:{
                 x:i*60,
-                y:y
-            }}))
+                y:y*70
+            }
+        }))
         }
     }
             console.log(this.invaders)
@@ -491,10 +507,10 @@ projectile.position.y + projectile.radius >=eagle.position.y
         const albatross = albatrosss[m]
         if(
         
-projectile.position.y-projectile.radius<=albatross.position.y + albatross.height&&
-projectile.position.x + projectile.radius>=albatross.position.x &&
-projectile.position.x - projectile.radius<=albatross.position.x + albatross.width &&
-projectile.position.y + projectile.radius >=albatross.position.y
+                projectile.position.y-projectile.radius<=albatross.position.y + albatross.height&&
+                projectile.position.x + projectile.radius>=albatross.position.x &&
+                projectile.position.x - projectile.radius<=albatross.position.x + albatross.width &&
+                projectile.position.y + projectile.radius >=albatross.position.y
 
             )
                 {
@@ -530,13 +546,10 @@ grids.forEach((grid,gridIndex)=>{
         invader.update({velocity: grid.velocity})
         //projectiles hit enemy
         projectiles.forEach((projectile,j) =>{
-            if(
-                projectile.position.y - projectile.radius<=invader.position.y + invader.height &&
+            if(projectile.position.y - projectile.radius<=invader.position.y + invader.height &&
                 projectile.position.x + projectile.radius>= invader.position.x && 
                 projectile.position.x-projectile.radius<= invader.position.x +invader.width &&
-                projectile.position.y + projectile.radius >= invader.position.y
-                ){
-                   
+                projectile.position.y + projectile.radius >= invader.position.y){                   
                 setTimeout(()=>{
                     const invaderFound = grid.invaders.find(
                         (invader2) => invader2 === invader
@@ -566,6 +579,14 @@ grids.forEach((grid,gridIndex)=>{
                            grids.splice(gridIndex,1)                   
                 }}
                 },0)
+            }else if(
+                player.position.y <=invader.position.y + invader.height && // de arriba
+                player.position.x + player.width<= invader.position.x &&  // de derecha
+                player.position.x >= invader.position.x +invader.width && //de izq
+                player.position.y + player.height >= invader.position.y 
+
+            ){
+                let shotsTaken=72
             }
         })
     })
