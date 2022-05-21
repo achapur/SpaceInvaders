@@ -9,6 +9,10 @@ canvas.height = innerHeight
 const modalEl = document.querySelector("#modalEl")
 const modalScoreEl = document.querySelector("#modalScoreEl")
 const buttonEl = document.querySelector("#buttonEl")
+const startButtonEl = document.querySelector("#startButtonEl")
+const startModalEl = document.querySelector("#startModalEl")
+const instructionsModalEl = document.querySelector("#instructionsModalEl")
+const ideaModalEl = document.querySelector("#ideaModalEl")
 
 class Player {
     constructor (){
@@ -151,6 +155,7 @@ class Bogey {
         const rows= Math.floor(Math.random()*3+1) // minimo 1 filas y max 3
         const columns = Math.floor(Math.random()*12+2)
         this.width = columns *70
+       
         for(let i = 0; i<columns;i++){
             for(let y = 0; y<rows;y++){
             this.invaders.push(new Bogey({position:{
@@ -306,8 +311,9 @@ const hitBallAudio = new Howl({src:'./audio/hitBall.wav',volume:.2})
 const birdieAudio = new Howl({src:'./audio/Bird.wav',volume:.2})
 const eagleAudio = new Howl({src:'./audio/Eagle.wav',volume:.2})
 const albatrossAudio = new Howl({src:'./audio/Albatross.wav',volume:.2})
+const doubleBogeyAudio = new Howl({src:'./audio/Bogey.wav',volume:.01})
 const bogeyAudio = new Howl({
-    src:'./audio/Bogey.wav',volume:.01
+    src:'./audio/DoubleBogey.wav',volume:.2
 })
 
 
@@ -406,6 +412,8 @@ function animate(){
         }))
     }
 
+
+
     for (let i = birdies.length-1;i>=0;i--){
         let birdie = birdies[i]
         birdie.update()
@@ -430,10 +438,10 @@ function animate(){
         console.log(particles)
         particle.update()
     })
-//-----------------------------------------------------------------------------------------------------------
+ //-----------------------------------------------------------------------------------------------------------
 
-//to end game:
-if(shotsLeft===0){
+ //to end game:
+if(shotsTaken===72){
     cancelAnimationFrame(animationId)
     clearInterval(intervalId)
 modalEl.style.display= 'block'
@@ -454,6 +462,7 @@ for(let i=projectiles.length-1;i>=0;i--){
                 )
                 {
                     projectiles.splice(i,1)
+                    shotsTaken += 1 
                     birdies.splice(j,1)
                     score -= 1 
                     scoreEl.innerHTML = score
@@ -471,6 +480,7 @@ projectile.position.y + projectile.radius >=eagle.position.y
         )
                 {
                     projectiles.splice(i,1)
+                    shotsTaken += 1 
                     eagles.splice(k,1)
                     score -= 2
                     scoreEl.innerHTML = score
@@ -489,6 +499,7 @@ projectile.position.y + projectile.radius >=albatross.position.y
             )
                 {
                     projectiles.splice(i,1)
+                    shotsTaken += 1 
                     albatrosss.splice(m,1)
                     score -= 3
                     scoreEl.innerHTML = score
@@ -497,16 +508,18 @@ projectile.position.y + projectile.radius >=albatross.position.y
     }
         if(projectile.position.y + projectile.radius<=0){
             projectiles.splice(i,1)
+            shotsTaken += 1 
+         
          } else{
             projectile.update()
         }
-        if(projectile.position.y-projectile.radius<=0         
-            )
-                {
+        //----------------------------------------------
+        if(projectile.position.y-projectile.radius<=0){
                     projectiles.splice(i,1)
                     score += 2
+                    shotsTaken += 1 
                     scoreEl.innerHTML = score
-                    albatrossAudio.play()
+                    doubleBogeyAudio.play()
                 }
     }
 
@@ -543,6 +556,7 @@ grids.forEach((grid,gridIndex)=>{
                     })
                    grid.invaders.splice(i,1)
                    projectiles.splice(j,1) 
+                   shotsTaken += 1 
                    if(grid.invaders.length>0){
                        const firstInvader = grid.invaders[0]
                        const lastInvader = grid.invaders[grid.invaders.length-1]
@@ -569,16 +583,18 @@ grids.forEach((grid,gridIndex)=>{
     }
     console.log(frames)
     //spawning enemies
-    if (frames%randomInterval ===0){
+    if (frames%8000000 ===0){
         grids.push(new Grid)
-        randomInterval = Math.floor((Math.random()*50000)+50000)
+       // randomInterval = Math.floor((Math.random()*50000)+50000)
         let frames = 0
         console.log(randomInterval)
     }
+    
+    
     frames++
 }
 
-animate()
+
 
 
 addEventListener('keydown',({key})=>{
@@ -598,7 +614,6 @@ addEventListener('keydown',({key})=>{
                 shotsLeft -= 1
                 console.log("te quedan", shotsLeft)
                 shotsLeftEl.innerHTML = shotsLeft
-                console.log(shotsTaken)
                 hitBallAudio.play()
             break;
     }
@@ -620,6 +635,7 @@ addEventListener('keyup',({key})=>{
             break
             case ' ':
                 console.log("space")
+                console.log("ya pegue",shotsTaken)
                 projectiles.push(new Projectile({
                     position:{
                         x:player.position.x+player.width-3,
@@ -641,5 +657,14 @@ addEventListener('click',(event)=>{
     modalEl.style.display='none'
     scoreEl.innerHTML = score;
     shotsLeftEl.innerHTML = shotsLeft
+})
+
+addEventListener('click',()=>{
+    init()
+    animate()
+  
+    ideaModalEl.style.display='none'
+    instructionsModalEl.style.display='none'
+    startModalEl.style.display='none'
 })
 

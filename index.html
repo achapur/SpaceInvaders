@@ -45,8 +45,121 @@ style =
     id="modalScoreEl" 
     style="font-size: 48px; margin-bottom: 0;margin-top: 8px;"> 0 </h1>
     <p style="font-size: 18px;margin: 0;color:gray"> from par </p>
-    <button id="buttonEl" style="margin-top: 12px;background-color:blue;border:none;color:white;padding:8px 16px;border-radius: 5px;cursor: pointer;;">Restart Game</button>
+    <button 
+    id="buttonEl" 
+    style="margin-top: 12px;
+    background-color:blue;
+    border:none;
+    color:white;
+    padding:8px 16px;
+    border-radius: 5px;
+    cursor: pointer;">
+    Restart Game</button>
 </div>
+
+<div id="startModalEl" 
+style = 
+    "
+    position: absolute;
+    background-color: white; 
+    top: 50%; 
+    transform: translate(-50%,-50%); 
+    left: 50%;
+    padding:16px;
+    max-width:500px;
+    width:100%;
+    text-align:center; 
+    border-radius: 5px">
+   
+    <h1
+   
+    style="font-size: 48px; margin-bottom: 0;margin-top: 8px;"> Golf Invaders </h1>
+   
+    <button 
+    id="startButtonEl" 
+    style="margin-top: 12px;
+    background-color:blue;
+    border:none;
+    color:white;
+    padding:8px 16px;
+    border-radius: 5px;
+    cursor: pointer;">
+    Start Game</button>
+</div>
+
+<div id="instructionsModalEl" 
+style = 
+    "
+    position: absolute;
+    background-color: green; 
+    top: 20%; 
+    transform: translate(-50%,-50%); 
+    left: 80%;
+    padding:16px;
+    max-width:500px;
+    width:100%;
+    text-align:center; 
+    border-radius: 5px">
+   
+
+    
+    <button 
+    id="startButtonEl" 
+    style="margin-top: 5px;
+    background-color:white;
+    border:none;
+    color:black;
+    padding:8px 16px;
+    border-radius: 5px;
+    cursor: pointer;">
+    a: move left</button>
+    
+    <button 
+    id="startButtonEl" 
+    style="margin-top: 5px;
+    background-color:white;
+    border:none;
+    color:black;
+    padding:8px 16px;
+    border-radius: 5px;
+    cursor: pointer;">
+    d: move right</button>
+<br>
+    <button 
+    id="startButtonEl" 
+    style="margin-top: 5px;
+    background-color:white;
+    border:none;
+    color:black;
+    padding:8px 16px;
+    border-radius: 5px;
+    cursor: pointer;">
+    space: hit golf ball</button>
+
+</div>
+
+<div id="ideaModalEl" 
+style = 
+    "
+    position: absolute;
+    background-color: green; 
+    top: 20%; 
+    transform: translate(-50%,-50%); 
+    left: 30%;
+    padding:16px;
+    max-width:800px;
+    max-height: 200px;
+    width:100%;
+    text-align:center; 
+    border-radius: 5px">
+   <h3> Golf Invaders is a game where you get 72 shots to shoot as low a score as possible. <br>
+        Birdies = -1 <br>
+        Eagles = -2 <br>
+        Albatross = -3 <br>
+        But watch out for Bogeys, as that will add one point to your score. <br>
+        And above all, make sure you don´t miss all of the above as that will be a <strong> Double Bogey</strong>, adding TWO points!!
+   </h3></div>
+
 <canvas ></canvas>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
