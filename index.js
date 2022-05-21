@@ -14,19 +14,6 @@ const startModalEl = document.querySelector("#startModalEl")
 const instructionsModalEl = document.querySelector("#instructionsModalEl")
 const ideaModalEl = document.querySelector("#ideaModalEl")
 
-class Background{
-    constructor(){
-        const image = new Image()
-        image.src= "./Images/BG.jpg"
-        this.image = image
-        this.width=canvas.width
-        this.height=canvas.height
-        this.position={
-            x:0,
-            y:0
-        }
-    }
-}
 
 
 class Player {
@@ -427,6 +414,8 @@ function animate(){
             }
         }))
     }
+
+
 
 
 
